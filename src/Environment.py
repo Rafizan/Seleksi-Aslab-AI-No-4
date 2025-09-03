@@ -1,15 +1,18 @@
-class WumpusWorld:
+class Environment:
     def __init__(self, width, height):
         self.width = width
         self.height = height
         self.grid = [[' ' for _ in range(width)] for _ in range(height)]
-        self.agent_position = (0, 0)
-        self.grid[2][0] = 'W'  # Wumpus
-        self.grid[2][0] = 'P'  # Pit
-        self.grid[2][2] = 'P'
-        self.grid[3][3] = 'P'
-        self.grid[2][1] = 'G'  # Gold
+        # Locations
+        self.grid[1][0] = 'W'  # Wumpus
+        self.grid[3][2] = 'P'  # Pit
+        self.grid[1][2] = 'P'
+        self.grid[0][3] = 'P'
+        self.grid[1][1] = 'G'  # Gold
+
+        self.agent_position = (3, 0)
         self.agent_direction = 'N'  # N, E, S, W
+
         self.score = 0
         self.has_gold = False
         self.game_over = False
@@ -65,12 +68,15 @@ class WumpusWorld:
             self.score += 999
             return 999
         else:
+            self.score -= 1
             return -1
     
     def climb(self):
-        if self.agent_position == (0, 0):
+        if self.agent_position == (3, 0) and self.has_gold:
             self.game_over = True
+            return 1000
 
+        self.score -= 1
         return -1
     
     def sense(self):
@@ -100,3 +106,15 @@ class WumpusWorld:
             perceptions['glitter'] = True
 
         return perceptions
+    
+    def print_grid(self):
+        direction_symbols = {'N': '^', 'E': '>', 'S': 'v', 'W': '<'}
+        for i in range(self.height):
+            row = []
+            for j in range(self.width):
+                if (j, i) == self.agent_position:
+                    row.append('A' + direction_symbols.get(self.agent_direction, ''))
+                else:
+                    row.append(self.grid[i][j])
+            print(' | '.join(row))
+            print('-' * (self.width * 4 - 1))
