@@ -171,12 +171,3 @@ class SARSAAgent:
             state = self.get_state()
         if not self.env.game_over:
             print(f"Max steps reached. Score: {self.env.score}")
-
-
-if __name__ == "__main__":
-    env = Environment(4, 4)
-    agent = QLearningAgent(env)
-    print("Training agent...")
-    agent.train(episodes=10000, max_steps=20)
-    print("Testing agent...")
-    agent.play(max_steps=20)

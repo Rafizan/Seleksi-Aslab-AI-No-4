@@ -10,7 +10,7 @@ class Environment:
         self.grid[0][3] = 'P'
         self.grid[1][1] = 'G'  # Gold
 
-        self.agent_position = (3, 0)
+        self.agent_position = (0, 3)
         self.agent_direction = 'N'  # N, E, S, W
 
         self.score = 0
@@ -72,9 +72,9 @@ class Environment:
             return -1
     
     def climb(self):
-        if self.agent_position == (3, 0) and self.has_gold:
+        if self.agent_position == (0, 3) and self.has_gold:
             self.game_over = True
-            return 1000
+            return 0
 
         self.score -= 1
         return -1
